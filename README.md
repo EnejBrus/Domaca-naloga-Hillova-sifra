@@ -12,8 +12,8 @@ Projekt je namenjen dekodiranju sporočila, ki je bilo zakodirano s pomočjo **H
 
 ## Cilj
 
-Dekodirati zakodovano sporočilo z uporabo znanih parametrov Hillove šifre in ustreznih matematičnih operacij nad matricami.
+Dekodirati zakodirano sporočilo z uporabo znanih parametrov Hillove šifre in ustreznih matematičnih operacij nad matrikami.
 
 ## Hillova Šifra
 
-Hillova šifra je simetrična blokovna šifra, ki temelji na linearni algebri. Tekst se razporedi v bloke, ki se množijo z ključno matrico za kodiranje oz. z njeno inverzo za dekodiranje.
+Hillova šifra je simetrična blokovna šifra, ki temelji na linearni algebri. Tekst se razporedi v bloke, ki se množijo s ključno matriko za kodiranje oz. z njenim inverzom za dekodiranje.
