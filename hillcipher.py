@@ -238,6 +238,13 @@ def parse_cipher_blocks(file_path):
     return blocks
 
 
+def parse_cipher_text_file(file_path):
+    """Parse raw ciphertext text and keep only uppercase A-Z letters."""
+    with open(file_path, "r", encoding="utf-8") as f:
+        raw = f.read()
+    return "".join(ch for ch in raw.upper() if "A" <= ch <= "Z")
+
+
 def ciphertext_stream_from_blocks(cipher_blocks):
     """Build the full ciphertext stream by concatenating listed 3-letter blocks."""
     return "".join(cipher_blocks)
@@ -614,7 +621,7 @@ def brute_force_best_only(
         )
         c_matrix = build_matrix_from_trigrams(cipher_triplet)
 
-        for plain_triplet, m_inv in valid_plain_options:
+        for m_idx, (plain_triplet, m_inv) in enumerate(valid_plain_options, start=1):
             key = (c_matrix @ m_inv) % 26
             try:
                 cipher = HillCipher(key)
@@ -697,13 +704,19 @@ def run_trigram_attack(
     progress_file=None,
     progress_every_c=100,
     best_event_file=None,
+    cipher_text_file=None,
 ):
     """Execute full trigram-based brute force and write sorted results."""
-    cipher_blocks = parse_cipher_blocks(cipher_blocks_path)
-    if len(cipher_blocks) < 3:
-        raise ValueError("Need at least 3 ciphertext blocks to run the attack.")
+    if cipher_text_file is not None:
+        cipher_text = parse_cipher_text_file(cipher_text_file)
+        if len(cipher_text) < 3:
+            raise ValueError("Need at least 3 ciphertext letters in --cipher-text-file.")
+    else:
+        cipher_blocks = parse_cipher_blocks(cipher_blocks_path)
+        if len(cipher_blocks) < 3:
+            raise ValueError("Need at least 3 ciphertext blocks to run the attack.")
+        cipher_text = ciphertext_stream_from_blocks(cipher_blocks)
 
-    cipher_text = ciphertext_stream_from_blocks(cipher_blocks)
     if cipher_prefix_len is not None:
         if cipher_prefix_len < 3:
             raise ValueError("cipher_prefix_len must be at least 3.")
@@ -820,6 +833,11 @@ if __name__ == "__main__":
         help="Path to ciphertext blocks file (default: cipher_blocks.txt)",
     )
     parser.add_argument(
+        "--cipher-text-file",
+        default=None,
+        help="Optional path to raw ciphertext text file (A-Z letters are extracted and used directly).",
+    )
+    parser.add_argument(
         "--output",
         default="trigram_attack_results.txt",
         help="Output file for sorted decryption candidates.",
@@ -890,6 +908,7 @@ if __name__ == "__main__":
         help="Optional file that appends a line whenever a new best English candidate is found.",
     )
     args = parser.parse_args()
+    cli_start = time.perf_counter()
 
     cipher_blocks_path = Path(args.cipher_blocks)
     output_path = Path(args.output)
@@ -913,6 +932,9 @@ if __name__ == "__main__":
         progress_file=args.progress_file,
         progress_every_c=args.progress_every_c,
         best_event_file=args.best_event_file,
+        cipher_text_file=args.cipher_text_file,
     )
+    cli_elapsed = time.perf_counter() - cli_start
     if not args.count_only:
         print(f"Done. Wrote {written} candidates to: {output_path}")
+    print(f"Total script runtime: {cli_elapsed:.2f}s ({format_duration(cli_elapsed)})")
