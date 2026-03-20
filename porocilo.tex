@@ -1,0 +1,156 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[slovene]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\onehalfspacing
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	urlcolor=blue,
+	pdftitle={Poročilo - Hillova šifra},
+	pdfauthor={Ime Priimek}
+}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+	\centering
+
+	{\large Univerza v Ljubljani\par}
+	{\large Fakulteta za matematiko in fiziko\par}
+	\vspace{2.5cm}
+
+	{\Large\bfseries Teorija kodiranja in kriptografija\par}
+	\vspace{0.8cm}
+	{\LARGE\bfseries Poročilo 1. domače naloge\par}
+	\vspace{0.5cm}
+	{\Large Hillova šifra\par}
+
+	\vfill
+
+	\begin{flushleft}
+		\textbf{Avtor:} Enej Brus \\
+	\end{flushleft}
+
+	\vspace{1.2cm}
+	{\large Ljubljana, \today\par}
+\end{titlepage}
+
+\tableofcontents
+\clearpage
+\hypersetup{pageanchor=true}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\section{Uvod}
+V tem poročilu bom predstavil kako sem se lotil dešifriranja besedila,
+ ki je bilo šifrirano s Hillovo šifro z dolžino bloka 3.
+
+\section{Dešifriranje Hillove šifre (blok velikosti 3)}
+
+Pri reševanju naloge sem obravnaval kriptogram, zašifriran s Hillovo šifro z blokom dolžine 3 nad $\mathbb{Z}_{26}$.
+
+\subsection{Analiza kriptograma}
+
+Najprej sem šifrirano besedilo razdelil na bloke po tri črke. Nato sem analiziral frekvence posameznih trojic (trigramov) v teh blokih. Opazil sem, da se trojica \texttt{YFY} pojavi daleč najpogosteje.
+
+Ker je trigram \texttt{THE} najpogostejši v angleškem jeziku in ker se besedilo začne s tem vzorcem, sem ugibal, da velja:
+\[
+\texttt{YFY} \longrightarrow \texttt{THE}.
+\]
+
+\subsection{Iskanje ključa}
+
+Na podlagi te predpostavke sem začel iskati potencialne kandidate za ključe. Najprej sem oblikoval matriki $C$ in $M$, kjer matrika $C$ vsebuje vektorje iz šifriranega besedila, matrika $M$ pa ustrezne vektorje iz domnevnega odprtega besedila (pri čemer je bil prvi blok fiksen zaradi predpostavke \texttt{YFY} $\rightarrow$ \texttt{THE}).
+
+Nato sem implementiral program, ki preizkusi različne možnosti za ključ $K$. Pri tem sem generiral le tiste matrike, ki so obrnljive v $\mathbb{Z}_{26}$, saj je to nujen pogoj za veljaven Hillov ključ.
+
+Za vsak potencialen ključ sem:
+\begin{itemize}
+\item izračunal inverz matrike $K^{-1} \mod 26$,
+\item dešifriral del kriptograma,
+\item ocenil kakovost dobljenega besedila.
+\end{itemize}
+
+Kakovost sem meril tako, da sem štel pojavitev pogostih angleških besed (npr. \texttt{THE}, \texttt{AND}, \texttt{ING}) in rezultate ustrezno sortiral. Ko sem dobil najboljšega kandidata, 
+sem ta ključ uporabil na celotnem besedilu in izpisal končno rešitev.
+To rešitev sem prekopiral v ChatGPT, da sem preveril, ali je smiselna angleščina,
+ in dobil končno dešifrirano besedilo.
+
+\subsection{Rezultat}
+
+Na ta način sem dobil matriko za ključ $K$ in njen inverz $K^{-1}$:
+
+\[
+K =
+\begin{pmatrix}
+7 & 3 & 0 \\
+5 & 0 & 10 \\
+4 & 16 & 11
+\end{pmatrix},
+\quad
+K^{-1} \equiv
+\begin{pmatrix}
+20 & 9 & 6 \\
+23 & 5 & 12 \\
+16 & 6 & 23
+\end{pmatrix}
+\pmod{26}.
+\]
+
+Čas izvajanja programa za iskanje ključa je bil:
+\[
+\text{Runtime} = 80.8846 \text{ sekund}.
+\]
+
+\subsection{Dešifrirano besedilo}
+
+Z dobljenim ključem sem uspešno dešifriral kriptogram. Dobljeno besedilo (z dodanimi presledki):
+
+\begin{quote}
+THE HITCHHIKER'S GUIDE TO THE GALAXY AB IS A COMEDY SCIENCE FICTION FRANCHISE CREATED BY DOUGLAS ADAMS. ORIGINALLY A RADIO SITCOM BROADCAST OVER TWO SERIES ON BBC RADIO BETWEEN 1978 AND 1980, IT WAS SOON ADAPTED TO OTHER FORMATS INCLUDING BOTH NOVELS AND COMIC BOOKS, A BBC TELEVISION SERIES, A TEXT ADVENTURE GAME, STAGE SHOWS AND A FEATURE FILM.
+
+THE HITCHHIKER'S GUIDE TO THE GALAXY IS AN INTERNATIONAL MULTIMEDIA PHENOMENON. THE NOVELS ARE THE MOST WIDELY DISTRIBUTED, HAVING BEEN TRANSLATED INTO MORE THAN 30 LANGUAGES. BY 2005, THE FIRST NOVEL, THE HITCHHIKER'S GUIDE TO THE GALAXY, HAS BEEN RANKED FOURTH ON THE BBC'S THE BIG READ POLL.
+
+THE SIXTH NOVEL, AND ANOTHER THING..., WAS WRITTEN BY EOIN COLFER WITH ADDITIONAL UNPUBLISHED MATERIAL BY DOUGLAS ADAMS. IN 2004, BBC RADIO ANNOUNCED AT AN ANNIVERSARY CELEBRATION WITH DIRK MAGGS, ONE OF THE ORIGINAL PRODUCERS IN CHARGE, THE FIRST OF SIX NEW EPISODES WAS BROADCAST ON 21 MARCH 2005.
+
+THE BROAD NARRATIVE OF THE HITCHHIKER'S GUIDE TO THE GALAXY FOLLOWS THE MISADVENTURES OF THE LAST SURVIVING EARTH MAN, ARTHUR DENT. FOLLOWING THE DEMOLITION OF THE EARTH TO MAKE WAY FOR A HYPERSPACE BYPASS, DENT IS RESCUED FROM EARTH'S DESTRUCTION BY FORD PREFECT, A HUMAN-LIKE ALIEN WRITER FOR THE ELECTRONIC TRAVEL GUIDE THE HITCHHIKER'S GUIDE TO THE GALAXY, BY HITCHHIKING ONTO A PASSING VOGON SPACECRAFT.
+
+FOLLOWING HIS RESCUE, DENT EXPLORES THE GALAXY WITH PREFECT AND ENCOUNTERS TRILLIAN, ANOTHER HUMAN WHO WAS TAKEN FROM EARTH BEFORE ITS DESTRUCTION, BY THE PRESIDENT OF THE GALAXY ZAPHOD BEEBLEBROX, AND MARVIN THE PARANOID ANDROID.
+
+CERTAIN NARRATIVE DETAILS WERE CHANGED AMONG THE VARIOUS ADAPTATIONS.
+
+PRINT IS INVERTIBLE KEY. KEY SHOULD BE TRUE FOR A VALID KEY.
+\end{quote}
+
+\section{Zaključek}
+
+S kombinacijo frekvenčne analize (prepoznavanje pogostih trigramov) in sistematičnega iskanja obrnljivih matrik sem uspešno rekonstruiral ključ Hillove šifre in dešifriral celotno besedilo.
+
+\section{Viri}
+
+\begin{enumerate}
+\item Oxford Emory Math Center: \emph{English Letter Frequencies}. Dostopno na: \url{https://mathcenter.oxford.emory.edu/site/math125/englishLetterFreqs/}
+
+\item Linguistics Stack Exchange: \emph{Common English bigrams/trigrams -- recognising that a jumble of letters contain}. Dostopno na: \url{https://linguistics.stackexchange.com/questions/3414/common-english-bigrams-trigrams-recognising-that-a-jumble-of-letters-contain}
+
+\item YouTube: \emph{Video razlaga Hillove šifre}. Dostopno na: \url{https://www.youtube.com/watch?v=JK3ur6W4rvw}
+
+\item ChatGPT (OpenAI): pomoč pri razlagi postopka, preverjanju smiselnosti dešifriranega besedila in oblikovanju poročila.
+\end{enumerate}
+
+
+\end{document}
