@@ -1,14 +1,37 @@
 import argparse
 from collections import Counter, defaultdict
 from pathlib import Path
+import re
 
 
 def parse_cipher_blocks(file_path: Path) -> list[tuple[int, str]]:
     blocks: list[tuple[int, str]] = []
+    freq_rows: list[tuple[str, int, list[int]]] = []
+    freq_pattern = re.compile(r"^([A-Z]{3}):\s*count=(\d+);\s*positions=\[(.*)\]\s*$")
+
     with file_path.open("r", encoding="utf-8") as handle:
         for raw_line in handle:
             line = raw_line.strip()
-            if not line or "=" not in line:
+            if not line:
+                continue
+
+            freq_match = freq_pattern.match(line)
+            if freq_match:
+                trigram = freq_match.group(1)
+                count = int(freq_match.group(2))
+                positions_blob = freq_match.group(3).strip()
+                pos_list: list[int] = []
+                if positions_blob:
+                    for token in positions_blob.split(","):
+                        token = token.strip()
+                        if token.isdigit():
+                            pos_list.append(int(token))
+                if len(pos_list) != count:
+                    continue
+                freq_rows.append((trigram, count, pos_list))
+                continue
+
+            if "=" not in line:
                 continue
 
             lhs, rhs = line.split("=", 1)
@@ -23,6 +46,13 @@ def parse_cipher_blocks(file_path: Path) -> list[tuple[int, str]]:
                 continue
 
             blocks.append((int(idx_text), trigram))
+
+    # Support files already in aggregated report format.
+    if not blocks and freq_rows:
+        for trigram, _, pos_list in freq_rows:
+            for pos in pos_list:
+                blocks.append((pos, trigram))
+        blocks.sort(key=lambda x: x[0])
 
     return blocks
 
