@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1774009861 "c:/Users/Brus/Documents/Faks/Teorija kodiranja in kriptografija/Domaca-naloga-Hillova-sifra/porocilo.tex" "porocilo.pdf" "porocilo" 1774009862 0
+["pdflatex"] 1774010202 "c:/Users/Brus/Documents/Faks/Teorija kodiranja in kriptografija/Domaca-naloga-Hillova-sifra/porocilo.tex" "porocilo.pdf" "porocilo" 1774010203 0
   "C:/Users/Brus/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1774009831 82098 40055d76d5b0f456422e640d98a85a6e ""
   "C:/Users/Brus/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1671563744 10787539 dac5f72df0dc50d8cfbcd6d31832784c ""
   "C:/Users/Brus/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc" 1256929440 2375 baa924870cfb487815765f9094cf3728 ""
@@ -112,11 +112,11 @@
   "C:/Users/Brus/AppData/Local/Programs/MiKTeX/tex/latex/setspace/setspace.sty" 1670403145 22490 8cac309b79a4c53a4ffce4b1b07aead0 ""
   "C:/Users/Brus/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/Brus/AppData/Local/Programs/MiKTeX/tex/latex/xurl/xurl.sty" 1641733940 4675 e4b8c405820368c2dfb03526e16d725a ""
-  "c:/Users/Brus/Documents/Faks/Teorija kodiranja in kriptografija/Domaca-naloga-Hillova-sifra/porocilo.tex" 1774009861 6376 e64c46fb5ad7bc3b6da89808aff2cbfe ""
-  "porocilo.aux" 1774009862 1598 4c4aac805ddc3fbd65252467fe5dc9ed "pdflatex"
-  "porocilo.out" 1774009862 1060 f65d6ff6b6b8212de4228c551335325f "pdflatex"
-  "porocilo.tex" 1774009861 6376 e64c46fb5ad7bc3b6da89808aff2cbfe ""
-  "porocilo.toc" 1774009862 646 1afa27397c24f13e35b343f7136ffeeb "pdflatex"
+  "c:/Users/Brus/Documents/Faks/Teorija kodiranja in kriptografija/Domaca-naloga-Hillova-sifra/porocilo.tex" 1774010201 6417 b7a60fdf633c31d57c9af0325a0b7938 ""
+  "porocilo.aux" 1774010203 1598 4c4aac805ddc3fbd65252467fe5dc9ed "pdflatex"
+  "porocilo.out" 1774010203 1060 f65d6ff6b6b8212de4228c551335325f "pdflatex"
+  "porocilo.tex" 1774010201 6417 b7a60fdf633c31d57c9af0325a0b7938 ""
+  "porocilo.toc" 1774010203 646 1afa27397c24f13e35b343f7136ffeeb "pdflatex"
   (generated)
   "porocilo.aux"
   "porocilo.log"
